@@ -29,6 +29,17 @@ AMovingObstacle::AMovingObstacle()
 void AMovingObstacle::BeginPlay()
 {
 	Super::BeginPlay();
+
+	StartLocation = GetActorLocation();
+
+
+	// Debug message to the console
+	UE_LOG(
+		LogTemp,
+		Warning,
+		TEXT("Moving Obstacle initialized at: %s"),
+		*StartLocation.ToString()
+	);
 	
 }
 
@@ -36,6 +47,39 @@ void AMovingObstacle::BeginPlay()
 void AMovingObstacle::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+    // Calculate the two positions
+    FVector EndLocation = StartLocation + MovementOffset;
+
+    FVector CurrentLocation = GetActorLocation();
+
+    // Determine which position we are moving toward
+    FVector TargetLocation;
+
+    if (bMovingForward)
+    {
+        TargetLocation = EndLocation;
+    }
+    else
+    {
+        TargetLocation = StartLocation;
+    }
+
+    // Move toward the target at a constant speed
+    FVector NewLocation = FMath::VInterpConstantTo(
+        CurrentLocation,
+        TargetLocation,
+        DeltaTime,
+        FMath::Max(0.0f, MovementSpeed)
+    );
+
+    SetActorLocation(NewLocation);
+
+    // Reverse direction when we reach the target
+    if (NewLocation.Equals(TargetLocation, 1.0f))
+    {
+        bMovingForward = !bMovingForward;
+    }
 
 }
 
