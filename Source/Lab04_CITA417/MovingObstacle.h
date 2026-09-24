@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Components/StaticMeshComponent.h"
 #include "MovingObstacle.generated.h"
 
 UCLASS()
@@ -14,6 +15,10 @@ class LAB04_CITA417_API AMovingObstacle : public AActor
 public:	
 	// Sets default values for this actor's properties
 	AMovingObstacle();
+
+	//Creating a reference Mesh
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Obstacle")
+	UStaticMeshComponent* ObstacleMesh;
 
 protected:
 	// Called when the game starts or when spawned

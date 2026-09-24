@@ -9,6 +9,20 @@ AMovingObstacle::AMovingObstacle()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	ObstacleMesh = CreateDefaultSubobject<UStaticMeshComponent>(
+		TEXT("ObstacleMesh")
+	);
+
+	RootComponent = ObstacleMesh;
+
+	ObstacleMesh->SetMobility(EComponentMobility::Movable);
+
+	ObstacleMesh->SetCollisionEnabled(
+		ECollisionEnabled::QueryAndPhysics
+	);
+
+	ObstacleMesh->SetCollisionResponseToAllChannels(ECR_Block);
+
 }
 
 // Called when the game starts or when spawned
