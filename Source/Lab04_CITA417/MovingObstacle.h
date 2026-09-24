@@ -29,6 +29,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 	float MovementSpeed = 100.0f;
 
+	// Rotation of the platform
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Rotation")
+	FRotator RotationRate = FRotator(0.0f, 0.0f, 0.0f);
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

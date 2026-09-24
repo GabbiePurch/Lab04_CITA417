@@ -81,5 +81,10 @@ void AMovingObstacle::Tick(float DeltaTime)
         bMovingForward = !bMovingForward;
     }
 
+    // Rotate the obstacle using DeltaTime
+    FRotator RotationThisFrame = RotationRate * DeltaTime;
+
+    AddActorLocalRotation(RotationThisFrame);
+
 }
 
