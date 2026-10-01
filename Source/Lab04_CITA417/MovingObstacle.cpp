@@ -48,6 +48,19 @@ void AMovingObstacle::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+    // Handle endpoint pause
+    if (bIsPaused)
+    {
+        PauseTimer += DeltaTime;
+
+        if (PauseTimer >= PauseDuration)
+        {
+            bIsPaused = false;
+            PauseTimer = 0.0f;
+            bMovingForward = !bMovingForward;
+        }
+    }
+
     // Calculate the two positions
     FVector EndLocation = StartLocation + MovementOffset;
 
@@ -65,20 +78,30 @@ void AMovingObstacle::Tick(float DeltaTime)
         TargetLocation = StartLocation;
     }
 
-    // Move toward the target at a constant speed
-    FVector NewLocation = FMath::VInterpConstantTo(
-        CurrentLocation,
-        TargetLocation,
-        DeltaTime,
-        FMath::Max(0.0f, MovementSpeed)
-    );
-
-    SetActorLocation(NewLocation);
-
-    // Reverse direction when we reach the target
-    if (NewLocation.Equals(TargetLocation, 1.0f))
+    if (!bIsPaused)
     {
-        bMovingForward = !bMovingForward;
+        FVector NewLocation = FMath::VInterpConstantTo(
+            CurrentLocation,
+            TargetLocation,
+            DeltaTime,
+            FMath::Max(0.0f, MovementSpeed)
+        );
+
+        SetActorLocation(NewLocation);
+
+        // When we reach the endpoint
+        if (NewLocation.Equals(TargetLocation, 1.0f))
+        {
+            if (PauseDuration > 0.0f)
+            {
+                bIsPaused = true;
+                PauseTimer = 0.0f;
+            }
+            else
+            {
+                bMovingForward = !bMovingForward;
+            }
+        }
     }
 
     // Rotate the obstacle using DeltaTime

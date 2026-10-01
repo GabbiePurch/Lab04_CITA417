@@ -33,6 +33,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Rotation")
 	FRotator RotationRate = FRotator(0.0f, 0.0f, 0.0f);
 
+	// Pause Duration
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+	float PauseDuration = 0.0f;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -48,5 +52,11 @@ private:
 
 	// Tells us where it's moving, away from styart to back to start.
 	bool bMovingForward = true;
+
+
+	// Setting up a pause Timer
+	bool bIsPaused = false;
+
+	float PauseTimer = 0.0f;
 
 };
